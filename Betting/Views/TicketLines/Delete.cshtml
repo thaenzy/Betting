@@ -1,0 +1,59 @@
+﻿@model Betting.TicketLine
+
+
+    <h3>Ben je zeker dat je deze lijn wil verwijderen?</h3>
+    <div>
+        <dl class="dl-horizontal">    
+            <dt>Ticket</dt>
+            <dd>@Html.DisplayFor(model => model.Ticket.CreatedOn) door @Html.DisplayFor(model => model.Ticket.CreatedBy)</dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Player.Name)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Player.Name)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Game)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Game)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.BetType.Name)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.BetType.Name)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Odd)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Odd)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Result.Name)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Result.Name)
+            </dd>
+    
+        </dl>
+    
+        @using (Html.BeginForm()) {
+            @Html.AntiForgeryToken()
+    
+            <div class="form-actions no-color">
+                <input type="submit" value="Verwijder" class="btn btn-default" /> |
+                @Html.ActionLink("Terug", MVC.Tickets.Details(Model.TicketId))
+            </div>
+        }
+    </div>

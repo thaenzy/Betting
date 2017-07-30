@@ -1,0 +1,52 @@
+﻿@model Betting.ViewModels.Statistics.IndexViewModel
+
+<h2>Statistiekjes</h2>
+
+<table class="table-bordered table-condensed">
+    <tr>
+        <th>#
+        </th>
+        <th>
+            Naam
+        </th>
+        <th>
+            Gemiddelde bet
+        </th>
+        <th># goed</th>
+        <th># fout</th>
+    </tr>
+    @{ var players = Model.Players.OrderByDescending(p => p.AantalGoed).ThenByDescending(p => p.AverageOdd).ToList();}
+    @for (int i = 0; i < players.Count(); i++)
+    {
+        var player = players[i];
+
+        var trClass = "";
+        if (i == 0)
+        {
+            trClass = "bg-success";
+        }
+        else if (i == players.Count - 1)
+        {
+            trClass = "bg-danger";
+        }
+    <tr class="@trClass">
+        <td>
+            <span>@(i+1)</span>
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => player.Player.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => player.AverageOdd)
+        </td>
+        <td>
+            <span class="label label-success">@Html.DisplayFor(modelItem => player.AantalGoed)</span>
+        </td>
+        <td>
+            <span class="label label-danger">@Html.DisplayFor(modelItem => player.AantalFout)</span>
+        </td>
+    </tr>
+
+    }
+
+</table>

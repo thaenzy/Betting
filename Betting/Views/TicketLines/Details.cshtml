@@ -1,0 +1,81 @@
+﻿@model Betting.TicketLine
+
+@{
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+</head>
+<body>
+    <div>
+        <h4>TicketLine</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.BetType.Name)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.BetType.Name)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Player.Name)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Player.Name)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Result.Name)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Result.Name)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Ticket.CreatedBy)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Ticket.CreatedBy)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Odd)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Odd)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.IsDeleted)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.IsDeleted)
+            </dd>
+    
+            <dt>
+                @Html.DisplayNameFor(model => model.Game)
+            </dt>
+    
+            <dd>
+                @Html.DisplayFor(model => model.Game)
+            </dd>
+    
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</body>
+</html>

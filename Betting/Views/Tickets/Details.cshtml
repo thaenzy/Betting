@@ -1,0 +1,70 @@
+﻿@model Betting.ViewModels.Tickets.TicketViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<div>
+    <h2>Ticket van @Html.DisplayFor(model => model.Ticket.CreatedOn)</h2>
+    <h6>Gemaakt door @Html.DisplayFor(model => model.Ticket.CreatedBy)</h6>
+    <p>
+        <a href="@Url.Action(MVC.TicketLines.Create(Model.Ticket.Id))" class="btn btn-primary">
+            <i class="glyphicon glyphicon-plus"></i>  Voeg een nieuwe lijn toe
+        </a>
+    </p>
+    <table class="table-bordered table-condensed">
+        <tr>
+            <th>
+                Speler
+            </th>
+            <th>
+                Speeldatum
+            </th>
+            <th>
+                Wedstrijd
+            </th>
+            <th>
+                Quotering
+            </th>
+            <th>
+                Resultaat
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var ticketLine in Model.TicketLines)
+        {
+            var item = ticketLine.TicketLine;
+            var rowClass = ticketLine.TicketLine.ResultEnum == ResultEnum.Won ? "bg-success" : ticketLine.TicketLine.ResultEnum == ResultEnum.Lost ? "bg-danger" : "";
+            <tr class="@rowClass">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Player.Name)
+                </td>
+                <td>
+                    @item.GamePlayedOn.GetValueOrDefault().ToString("dd-MM-yyyy H:mm")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Game) <span class="badge">@Html.DisplayFor(modelItem => item.BetType.Name)</span>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Odd)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Result.Name)
+                </td>
+                <td>
+                    <a href="@Url.Action(MVC.TicketLines.Edit(item.Id))" class="btn btn-primary btn-xs">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                    </a>
+                    <a href="@Url.Action(MVC.TicketLines.Delete(item.Id))" class="btn btn-danger btn-xs">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </a>
+                </td>
+            </tr>
+        }
+        </table>
+</div>
+<p>
+    @*@Html.ActionLink("Edit", "Edit", new { id = Model.Ticket.Id }) |*@
+    @Html.ActionLink("Terug", MVC.Tickets.Index())
+</p>
