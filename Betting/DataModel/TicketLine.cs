@@ -34,9 +34,8 @@ namespace Betting
         public string Game { get; set; }
         
         [DisplayName("Speeldatum")]
-        [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime? GamePlayedOn { get; set; }
+        public DateTime GamePlayedOn { get; set; }
 
         public virtual BetType BetType { get; set; }
 

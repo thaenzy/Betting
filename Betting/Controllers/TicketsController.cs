@@ -53,7 +53,7 @@ namespace Betting.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public virtual ActionResult Create([Bind(Include = "Id,CreatedOn,CreatedBy,IsDeleted")] Ticket ticket)
+        public virtual ActionResult Create(Ticket ticket)
         {
             if (ModelState.IsValid)
             {

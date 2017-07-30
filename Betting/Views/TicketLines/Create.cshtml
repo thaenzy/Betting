@@ -1,59 +1,69 @@
-﻿@model Betting.TicketLine
+﻿@model Betting.ViewModels.Tickets.EditTicketLineViewModel
 
-@{
-}
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Create</title>
-</head>
-<body>
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/jqueryval")
-    
-    
     @using (Html.BeginForm()) 
     {
         @Html.AntiForgeryToken()
         
         <div class="form-horizontal">
             <h4>TicketLine</h4>
-            @Html.HiddenFor(model => model.TicketId, new { Value = ViewBag.TicketId })
+            @Html.HiddenFor(model => model.TicketLine.TicketId)
             <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         
+
             <div class="form-group">
-                @Html.LabelFor(model => model.PlayerId, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.TicketLine.PlayerId, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.DropDownList("PlayerId", null, htmlAttributes: new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.PlayerId, "", new { @class = "text-danger" })
+                    @Html.DropDownListFor(model => model.TicketLine.PlayerId, Model.Players, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.TicketLine.PlayerId, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.Game, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.TicketLine.GamePlayedOn, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Game, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Game, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.TicketLine.GamePlayedOn, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.TicketLine.GamePlayedOn, "", new { @class = "text-danger" })
                 </div>
             </div>
-    
+
             <div class="form-group">
-                @Html.LabelFor(model => model.BetTypeId, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.TicketLine.GamePlayedOnTime, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.DropDownList("BetTypeId", null, htmlAttributes: new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.BetTypeId, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.TicketLine.GamePlayedOnTime, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.TicketLine.GamePlayedOnTime, "", new { @class = "text-danger" })
                 </div>
             </div>
-    
+
             <div class="form-group">
-                @Html.LabelFor(model => model.Odd, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.TicketLine.Game, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Odd, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.Odd, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.TicketLine.Game, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.TicketLine.Game, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TicketLine.BetTypeId, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.TicketLine.BetTypeId, Model.BetTypes, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.TicketLine.BetTypeId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TicketLine.Odd, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.TicketLine.Odd, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.TicketLine.Odd, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.TicketLine.ResultId, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.TicketLine.ResultId, Model.Results, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.TicketLine.ResultId, "", new { @class = "text-danger" })
                 </div>
             </div>
     
@@ -66,7 +76,5 @@
     }
     
     <div>
-        @Html.ActionLink("Terug", MVC.Tickets.Details((int)ViewBag.TicketId))
+        @Html.ActionLink("Terug", MVC.Tickets.Details(Model.TicketLine.TicketId))
     </div>
-</body>
-</html>

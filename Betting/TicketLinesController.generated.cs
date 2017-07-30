@@ -140,7 +140,7 @@ namespace Betting.Controllers
         public class ActionParamsClass_Create
         {
             public readonly string ticketId = "ticketId";
-            public readonly string ticketLine = "ticketLine";
+            public readonly string viewModel = "viewModel";
         }
         static readonly ActionParamsClass_Edit s_params_Edit = new ActionParamsClass_Edit();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -232,14 +232,14 @@ namespace Betting.Controllers
         }
 
         [NonAction]
-        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Betting.TicketLine ticketLine);
+        partial void CreateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, Betting.ViewModels.Tickets.EditTicketLineViewModel viewModel);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Create(Betting.TicketLine ticketLine)
+        public override System.Web.Mvc.ActionResult Create(Betting.ViewModels.Tickets.EditTicketLineViewModel viewModel)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Create);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "ticketLine", ticketLine);
-            CreateOverride(callInfo, ticketLine);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "viewModel", viewModel);
+            CreateOverride(callInfo, viewModel);
             return callInfo;
         }
 

@@ -46,11 +46,11 @@ namespace Betting.Controllers
         // GET: TicketLines/Create
         public virtual ActionResult Create(int ticketId)
         {
-            ViewBag.BetTypeId = new SelectList(db.BetType, "Id", "Name");
-            ViewBag.PlayerId = new SelectList(db.Player, "Id", "Name");
-            ViewBag.ResultId = new SelectList(db.Result, "Id", "Name");
-            ViewBag.TicketId = ticketId;
-            return View();
+            var viewModel = new EditTicketLineViewModel(new TicketLine() { TicketId = ticketId });
+            viewModel.BetTypes = new SelectList(db.BetType, "Id", "Name");
+            viewModel.Players = new SelectList(db.Player, "Id", "Name");
+            viewModel.Results = new SelectList(db.Result, "Id", "Name");
+            return View(viewModel);
         }
 
         // POST: TicketLines/Create
@@ -58,20 +58,20 @@ namespace Betting.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public virtual ActionResult Create([Bind(Include = "Id,TicketId,ResultId,PlayerId,BetTypeId,Odd,IsDeleted,Game")] TicketLine ticketLine)
+        public virtual ActionResult Create(EditTicketLineViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                db.TicketLine.Add(ticketLine);
+                SetGamePlayedOn(viewModel.TicketLine);
+                db.TicketLine.Add(viewModel.TicketLine);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction(MVC.Tickets.Details(viewModel.TicketLine.TicketId));
             }
 
-            ViewBag.BetTypeId = new SelectList(db.BetType, "Id", "Name", ticketLine.BetTypeId);
-            ViewBag.PlayerId = new SelectList(db.Player, "Id", "Name", ticketLine.PlayerId);
-            ViewBag.ResultId = new SelectList(db.Result, "Id", "Name", ticketLine.ResultId);
-            ViewBag.TicketId = new SelectList(db.Ticket, "Id", "CreatedBy", ticketLine.TicketId);
-            return View(ticketLine);
+            viewModel.BetTypes = new SelectList(db.BetType, "Id", "Name");
+            viewModel.Players = new SelectList(db.Player, "Id", "Name");
+            viewModel.Results = new SelectList(db.Result, "Id", "Name");
+            return View(viewModel);
         }
 
         // GET: TicketLines/Edit/5
@@ -82,18 +82,30 @@ namespace Betting.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             TicketLine ticketLine = db.TicketLine.Find(id);
+            SetGamePlayedOnTime(ticketLine);
             if (ticketLine == null)
             {
                 return HttpNotFound();
             }
-            var viewModel = new EditTicketLineViewModel();
-            viewModel.TicketLine = new TicketLineViewModel(ticketLine);
+            var viewModel = new EditTicketLineViewModel(ticketLine);
             viewModel.BetTypes = new SelectList(db.BetType, "Id", "Name");//, ticketLine.BetTypeId);
             viewModel.Players = new SelectList(db.Player, "Id", "Name");//, ticketLine.PlayerId);
             viewModel.Results = new SelectList(db.Result, "Id", "Name");//, ticketLine.ResultId);
             return View(viewModel);
         }
 
+        private void SetGamePlayedOnTime(TicketLine ticketLine)
+        {
+            ticketLine.GamePlayedOnTime = string.Format("{0}:{1}", ticketLine.GamePlayedOn.Hour, ticketLine.GamePlayedOn.Minute);
+        }
+
+        private void SetGamePlayedOn(TicketLine ticketLine)
+        {
+            var parts = ticketLine.GamePlayedOnTime.Split(':');
+            var timespan = new TimeSpan(int.Parse(parts[0]), int.Parse(parts[1]), 0);
+            ticketLine.GamePlayedOn = ticketLine.GamePlayedOn.Date + timespan;
+        }
+        
         // POST: TicketLines/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -104,12 +116,10 @@ namespace Betting.Controllers
 
             if (ModelState.IsValid)
             {
-                db.Entry(viewModel.TicketLine.TicketLine).State = EntityState.Modified;
-                var parts = viewModel.TicketLine.TicketTime.Split(':');
-                var timespan = new TimeSpan(int.Parse(parts[0]), int.Parse(parts[1]), 0);
-                viewModel.TicketLine.TicketLine.GamePlayedOn = viewModel.TicketLine.TicketLine.GamePlayedOn.Value.Date + timespan;
+                db.Entry(viewModel.TicketLine).State = EntityState.Modified;
+                SetGamePlayedOn(viewModel.TicketLine);
                 db.SaveChanges();
-                return RedirectToAction(MVC.Tickets.Details(viewModel.TicketLine.TicketLine.TicketId));
+                return RedirectToAction(MVC.Tickets.Details(viewModel.TicketLine.TicketId));
             }
             
             return View(viewModel);
@@ -122,7 +132,8 @@ namespace Betting.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TicketLine ticketLine = db.TicketLine.Find(id);
+            TicketLine ticketLine = db.TicketLine.Include(tl => tl.Ticket).SingleOrDefault(tl => tl.Id == id);
+            SetGamePlayedOnTime(ticketLine);
             if (ticketLine == null)
             {
                 return HttpNotFound();
@@ -136,9 +147,9 @@ namespace Betting.Controllers
         public virtual ActionResult DeleteConfirmed(int id)
         {
             TicketLine ticketLine = db.TicketLine.Find(id);
-            db.TicketLine.Remove(ticketLine);
+            ticketLine.IsDeleted = true;
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction(MVC.Tickets.Details(ticketLine.TicketId));
         }
 
         protected override void Dispose(bool disposing)

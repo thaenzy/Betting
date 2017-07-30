@@ -303,6 +303,8 @@
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Statistics\IndexViewModel.cs" />
+    <Compile Include="ViewModels\Statistics\PlayerViewModel.cs" />
+    <Compile Include="ViewModels\Tickets\EditTicketLineViewModel.cs" />
     <Compile Include="ViewModels\Tickets\IndexViewModel.cs" />
     <Compile Include="ViewModels\Tickets\TicketViewModel.cs" />
   </ItemGroup>
@@ -313,6 +315,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Compile Include="DataModel\Partial\Ticket.Partial.cs" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />

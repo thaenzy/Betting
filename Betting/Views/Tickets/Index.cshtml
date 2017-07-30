@@ -7,13 +7,16 @@
         <i class="glyphicon glyphicon-plus"></i>  Voeg een nieuw ticket toe
     </a>
 </p>
-<table class="table">
+<table class="table-bordered table-condensed">
     <tr>
         <th>
             Gemaakt op
         </th>
         <th>
             Gemaakt door
+        </th>
+        <th>
+            Uitbetaling
         </th>
         <th>te spelen / goed / fout</th>
         <th></th>
@@ -29,10 +32,13 @@
                 @Html.DisplayFor(modelItem => item.Ticket.CreatedBy)
             </td>
             <td>
-                <span class="label label-default">@Html.DisplayFor(modelItem => item.AantalTeSpelen)</span>
-                <span class="label label-success">@Html.DisplayFor(modelItem => item.AantalGoed)</span>
-                <span class="label label-danger">@Html.DisplayFor(modelItem => item.AantalFout)</span>
-</td>
+                € @Html.DisplayFor(modelItem => item.Ticket.Payout)
+            </td>
+            <td>
+                <span class="label label-default">@Html.DisplayFor(modelItem => item.TotalBetsNotYetsPlayed)</span>
+                <span class="label label-success">@Html.DisplayFor(modelItem => item.TotalGoodBets)</span>
+                <span class="label label-danger">@Html.DisplayFor(modelItem => item.TotalFaulthyBets)</span>
+            </td>
             <td>
                 <a href="@Url.Action(MVC.Tickets.Details(item.Ticket.Id))" class="btn btn-primary btn-xs">
                     <span class="glyphicon glyphicon-search"></span>
