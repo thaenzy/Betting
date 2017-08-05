@@ -9,9 +9,6 @@
         <th>
             Naam
         </th>
-        <th>
-            Gemiddelde bet
-        </th>
         <th># goed</th>
         <th># fout</th>
         <th>
@@ -20,8 +17,11 @@
         <th>
             Gemiddelde foute bet
         </th>
+        <th>
+            Gemiddelde bet
+        </th>
     </tr>
-    @{ var players = Model.Players.OrderByDescending(p => p.TotalWonBets).ThenByDescending(p => p.AverageOdd).ToList();}
+    @{ var players = Model.Players.OrderByDescending(p => p.TotalWonBets).ThenByDescending(p => p.AverageWonOdd).ToList();}
     @for (int i = 0; i < players.Count(); i++)
     {
         var player = players[i];
@@ -43,9 +43,6 @@
             @Html.DisplayFor(modelItem => player.Player.Name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => player.AverageOdd)
-        </td>
-        <td>
             <span class="label label-success">@Html.DisplayFor(modelItem => player.TotalWonBets)</span>
         </td>
         <td>
@@ -56,6 +53,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => player.AverageLostOdd)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => player.AverageOdd)
         </td>
     </tr>
 
