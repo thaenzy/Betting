@@ -4,21 +4,18 @@
 
 <table class="table-bordered table-condensed">
     <tr>
-        <th>#
+        <th>
+            #
         </th>
         <th>
             Naam
         </th>
-        <th># goed</th>
-        <th># fout</th>
+        <th></th>
         <th>
-            Gemiddelde goede bet
+            Gem. goed/fout/alles
         </th>
         <th>
-            Gemiddelde foute bet
-        </th>
-        <th>
-            Gemiddelde bet
+            Resultaten
         </th>
     </tr>
     @{ var players = Model.Players.OrderByDescending(p => p.TotalWonBets).ThenByDescending(p => p.AverageWonOdd).ToList();}
@@ -35,29 +32,50 @@
         {
             trClass = "bg-danger";
         }
-    <tr class="@trClass">
-        <td>
-            <span>@(i+1)</span>
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => player.Player.Name)
-        </td>
-        <td>
-            <span class="label label-success">@Html.DisplayFor(modelItem => player.TotalWonBets)</span>
-        </td>
-        <td>
-            <span class="label label-danger">@Html.DisplayFor(modelItem => player.TotalLostBets)</span>
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => player.AverageWonOdd)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => player.AverageLostOdd)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => player.AverageOdd)
-        </td>
-    </tr>
+        <tr class="@trClass">
+            <td>
+                <span>@(i + 1)</span>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => player.Player.Name)
+            </td>
+            <td>
+                <span class="label label-success">@Html.DisplayFor(modelItem => player.TotalWonBets)</span>
+                <span class="label label-danger">@Html.DisplayFor(modelItem => player.TotalLostBets)</span>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => player.AverageWonOdd) / @Html.DisplayFor(modelItem => player.AverageLostOdd) / @Html.DisplayFor(modelItem => player.AverageOdd)
+            </td>
+            <td>
+                @foreach (var ticket in Model.Tickets.OrderBy(t => t.CreatedOn))
+                {
+                    var playerTicketLine = player.Player.TicketLine.SingleOrDefault(tl => tl.TicketId == ticket.Id);
+
+                    var color = "lightgray";
+                    var title = ticket.CreatedOn.ToString("dd-MM-yyyy");
+                    if (playerTicketLine != null)
+                    {
+                        if (playerTicketLine.ResultEnum == ResultEnum.Won)
+                        {
+                            color = "green";
+                        }
+                        else if (playerTicketLine.ResultEnum == ResultEnum.Lost)
+                        {
+                            color = "red";
+                        }
+
+                        title = playerTicketLine.Game + "(" + @playerTicketLine.GamePlayedOn.ToString("dd-MM-yyyy") + ")";
+                        <span class="glyphicon .glyphicon-star-empty glyphicon-star" style="color:@color" title="@title"></span>
+                    }
+                    else
+                    {
+                       
+                        <span class="glyphicon .glyphicon-star-empty glyphicon-star" style="color:lightgray"></span>
+                    }
+                }
+
+            </td>
+        </tr>
 
     }
 

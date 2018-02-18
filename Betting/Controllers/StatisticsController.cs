@@ -18,6 +18,7 @@ namespace Betting.Controllers
             var players = db.Player.Include(p => p.TicketLine)
                 .ToList();
             var vm = new IndexViewModel() { Players = players.Select(p => new PlayerViewModel(p)).ToList() };
+            vm.Tickets = db.Ticket.Where(t => !t.IsDeleted).ToList();
             return View(vm);
         }
     }

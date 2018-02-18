@@ -37,5 +37,10 @@ namespace Betting.ViewModels.Tickets
             Ticket = ticket;
             TicketLines = ticket.TicketLine.OrderBy(tl => tl.GamePlayedOn).ToList();
         }
+
+        public TicketViewModel()
+        {
+
+        }
     }
 }

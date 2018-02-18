@@ -85,15 +85,14 @@ namespace Betting.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public virtual ActionResult Edit([Bind(Include = "Id,CreatedOn,CreatedBy,IsDeleted")] Ticket ticket)
+        public virtual ActionResult Edit(Ticket ticket)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(ticket).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
             }
-            return View(ticket);
+            return RedirectToAction(MVC.Tickets.Details(ticket.Id));
         }
 
         // GET: Tickets/Delete/5

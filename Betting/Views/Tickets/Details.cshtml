@@ -7,36 +7,16 @@
 <div>
     <h2>Ticket van @Html.DisplayFor(model => model.Ticket.CreatedOn)</h2>
 
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Ticket.CreatedBy)
-        </dt>
+    @if (Request.IsAuthenticated)
+    {
+            @Html.Partial("Edit", Model.Ticket)
+            <p>
+                <a href="@Url.Action(MVC.TicketLines.Create(Model.Ticket.Id))" class="btn btn-primary">
+                    <i class="glyphicon glyphicon-plus"></i>  Voeg een nieuwe lijn toe
+                </a>
+            </p>
+    }
 
-        <dd>
-            @Html.DisplayFor(model => model.Ticket.CreatedBy)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Ticket.Price)
-        </dt>
-
-        <dd>
-            € @Html.DisplayFor(model => model.Ticket.Price)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Ticket.Payout)
-        </dt>
-
-        <dd>
-            € @Html.DisplayFor(model => model.Ticket.Payout)
-        </dd>
-    </dl>
-        <p>
-            <a href="@Url.Action(MVC.TicketLines.Create(Model.Ticket.Id))" class="btn btn-primary">
-                <i class="glyphicon glyphicon-plus"></i>  Voeg een nieuwe lijn toe
-            </a>
-        </p>
         <table class="table-bordered table-condensed">
             <tr>
                 <th>
@@ -54,12 +34,15 @@
                 <th>
                     Resultaat
                 </th>
+@if (Request.IsAuthenticated)
+{
                 <th></th>
+}
             </tr>
 
             @foreach (var ticketLine in Model.TicketLines)
-            {
-                var rowClass = ticketLine.ResultEnum == ResultEnum.Won ? "bg-success" : ticketLine.ResultEnum == ResultEnum.Lost ? "bg-danger" : "";
+{
+    var rowClass = ticketLine.ResultEnum == ResultEnum.Won ? "bg-success" : ticketLine.ResultEnum == ResultEnum.Lost ? "bg-danger" : "";
                 <tr class="@rowClass">
                     <td>
                         @Html.DisplayFor(modelItem => ticketLine.Player.Name)
@@ -76,6 +59,8 @@
                     <td>
                         @Html.DisplayFor(modelItem => ticketLine.Result.Name)
                     </td>
+@if (Request.IsAuthenticated)
+{
                     <td>
                         <a href="@Url.Action(MVC.TicketLines.Edit(ticketLine.Id))" class="btn btn-primary btn-xs">
                             <span class="glyphicon glyphicon-pencil"></span>
@@ -84,6 +69,7 @@
                             <span class="glyphicon glyphicon-trash"></span>
                         </a>
                     </td>
+}
                 </tr>
             }
         </table>
